@@ -78,6 +78,8 @@ _zsh_exa_download_install() {
      esac
    _zsh_exa_log $NONE "blue" "  -> download and install exa ${version}"
    curl -o "${EXA_HOME}/exa.zip" -fsSL https://github.com/ogham/exa/releases/download/${version}/exa-${OSTYPE%-*}-${machine}-${version}.zip || (_zsh_exa_log $BOLD "red" "Error while downloading exa release" ; return)
+
+   LD_LIBRARY_PATH=${UNZIP_PATH}/usr/lib
    ${UNZIP_PATH}/usr/bin/unzip -o ${EXA_HOME}/exa.zip -d ${EXA_HOME} 2>&1 > /dev/null
    rm -rf ${EXA_HOME}/exa.zip
    rm -rf ${UNZIP_PATH}
