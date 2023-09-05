@@ -78,7 +78,7 @@ _zsh_exa_download_install() {
      esac
    _zsh_exa_log $NONE "blue" "  -> download and install exa ${version}"
    curl -o "${EXA_HOME}/exa.zip" -fsSL https://github.com/ogham/exa/releases/download/${version}/exa-${OSTYPE%-*}-${machine}-${version}.zip || (_zsh_exa_log $BOLD "red" "Error while downloading exa release" ; return)
-   unzip -o ${EXA_HOME}/exa.zip -d ${EXA_HOME} 2>&1 > /dev/null
+   ${UNZIP_PATH}/usr/bin/unzip -o ${EXA_HOME}/exa.zip -d ${EXA_HOME} 2>&1 > /dev/null
    rm -rf ${EXA_HOME}/exa.zip
    rm -rf ${UNZIP_PATH}
    echo ${version} > ${ZSH_EXA_VERSION_FILE}
@@ -86,6 +86,7 @@ _zsh_exa_download_install() {
 }
 
 _zsh_exa_install() {
+  _zsh_exa_install_unzip
   _zsh_exa_log $NONE "blue" "#############################################"
   _zsh_exa_log $BOLD "blue" "Installing exa..."
   _zsh_exa_log $NONE "blue" "-> creating exa home dir : ${EXA_HOME}"
@@ -122,12 +123,6 @@ _zsh_exa_load() {
         path+=($plugin_dir)
     fi
 }
-
-# install local unzip if it isnt already installed
-if command -v unzip  &> /dev/null
-then
-  _zsh_exa_install_unzip
-fi
 
 # install exa if it isnt already installed
 [[ ! -f "${ZSH_EXA_VERSION_FILE}" ]] && _zsh_exa_install
